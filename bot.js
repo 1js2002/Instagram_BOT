@@ -10,6 +10,7 @@ function sleep(ms) {
 
 (async function example() {
   let driver = await new Builder().forBrowser('firefox').build();
+  console.log('opening the browser');
   try {
     //go to instagram and login - done
     await driver.get('https://www.instagram.com');
