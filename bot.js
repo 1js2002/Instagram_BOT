@@ -8,17 +8,20 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-(async function StartBot() {
+(async function example() {
   let driver = await new Builder().forBrowser('firefox').build();
   console.log('opening the browser');
+
   try {
     //go to instagram and login - done
     await driver.get('https://www.instagram.com');
     console.log('instagram is loaded');
     await sleep(5000);
-    await driver.wait(until.elementLocated(By.name('username')), 10000); // Wait for the username field to be located
-    await driver.findElement(By.name('username')).sendKeys(process.env.INSTAGRAM_USERNAME); // Enter the username
-    await driver.findElement(By.name('password')).sendKeys(process.env.INSTAGRAM_PASSWORD); // Enter the password and submit the form
+    
+    // Wait for the username field to be located, enter the username and password, and submit the form
+    await driver.wait(until.elementLocated(By.name('username')), 10000); 
+    await driver.findElement(By.name('username')).sendKeys(process.env.INSTAGRAM_USERNAME); 
+    await driver.findElement(By.name('password')).sendKeys(process.env.INSTAGRAM_PASSWORD); 
     await sleep(3000);
     await driver.findElement(By.className('_acan _acap _acas _aj1-')).click(); // Click the login button
     console.log('logged into your acc');
@@ -26,35 +29,28 @@ function sleep(ms) {
     // Wait for 5 seconds
     await sleep(5000);
 
-    //say no to "turn on Notifications"-done
+    // Click "Not Now" to dismiss the "Turn on Notifications" prompt
     await driver.wait(until.elementLocated(By.className('_a9-- _a9_1')), 10000);
     await driver.wait(until.elementIsEnabled(driver.findElement(By.className('_a9-- _a9_1'))), 10000);
     await driver.findElement(By.className('_a9-- _a9_1')).click();
 
     await sleep(3000);
 
-   // Click notification button -done(the sidebar is loaded)
-    await driver.wait(until.elementLocated(By.css('[aria-label="Notifications"]')), 10000); // Wait for the notification button to be located
-    await driver.wait(until.elementIsEnabled(driver.findElement(By.css('[aria-label="Notifications"]'))), 10000); // Wait for the notification button to be clickable
+    // Click the notification button 
+    await driver.wait(until.elementLocated(By.css('[aria-label="Notifications"]')), 10000);
+    await driver.wait(until.elementIsEnabled(driver.findElement(By.css('[aria-label="Notifications"]'))), 10000);
     await driver.findElement(By.css('[aria-label="Notifications"]')).click();
-    console.log('notificaiton button clicked')
+    console.log('notification button clicked');
+
     await sleep(5000);
-    //click to see all notificaitons in the sidebar x1iyjqo2 -done
+
+    // Click "See All" to view all notifications in the sidebar
     await driver.wait(until.elementLocated(By.css('[aria-label=""]')), 10000);
-    await driver.wait(until.elementIsEnabled(driver.findElement(By.css('[aria-label=""]'))), 10000); // Wait for the notifications to be clickable
+    await driver.wait(until.elementIsEnabled(driver.findElement(By.css('[aria-label=""]'))), 10000);
     await driver.findElement(By.css('[aria-label=""]')).click();
-    console.log('noti sidebar is loaded')
+    console.log('notification sidebar loaded');
 
-    //To delete 1 request
-    
-   /* await sleep(5000);
-    await driver.wait(until.elementLocated(By.xpath('/html/body/div[2]/div/div/div[1]/div/div/div/div[1]/div[1]/div[1]/div/div/div[2]/div/div/div/div/div[2]/div[3]/div[2]/div')), 10000);
-    await driver.wait(until.elementIsEnabled(driver.findElement(By.xpath('/html/body/div[2]/div/div/div[1]/div/div/div/div[1]/div[1]/div[1]/div/div/div[2]/div/div/div/div/div[2]/div[3]/div[2]/div'))), 10000); // Wait for the notifications to be clickable
-    await driver.findElement(By.xpath('/html/body/div[2]/div/div/div[1]/div/div/div/div[1]/div[1]/div[1]/div/div/div[2]/div/div/div/div/div[2]/div[3]/div[2]/div')).click();
-    console.log("deleted the request");
-    await sleep(10000); */
-
-    // loop to delete all requests
+    // Delete all pending follow requests
     let count = 2;
     while (true) {
       try {
@@ -72,7 +68,9 @@ function sleep(ms) {
         break;
       }
     }
-    //accepting requests
+
+    // Accept all pending follow requests
+    /*
     let Acount = 3;
       while (true) {
       try {
@@ -89,8 +87,7 @@ function sleep(ms) {
         console.log("No more requests to accept");
         break;
       }
-    }
-
+    } */
   } finally {    
     await driver.quit();
   }
